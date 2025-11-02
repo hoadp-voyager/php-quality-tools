@@ -1,9 +1,0 @@
-version: '3.9'
-services:
-  php-quality-tools:
-    build: .
-    container_name: php-quality-tools
-    working_dir: /app
-    volumes:
-      - .:/app
-    command: tail -f /dev/null

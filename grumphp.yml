@@ -1,9 +1,0 @@
-grumphp:
-  tasks:
-    phpcs:
-      standard: phpcs.xml
-      ignore_patterns: []
-    phpstan:
-      configuration: phpstan.neon
-  git_hook_variables:
-    EXEC_GRUMPHP_COMMAND: "vendor/bin/grumphp run"
