@@ -1,6 +1,7 @@
 {
   "name": "voyager/php-quality-tools",
-  "description": "PHP coding standard tools",
+  "description": "PHP quality tools (Docker-based checking)",
+  "type": "library",
   "require": {
     "php": ">=8.2",
     "squizlabs/php_codesniffer": "^3.9",
@@ -9,7 +10,12 @@
   },
   "scripts": {
     "post-install-cmd": [
-      "bash scripts/setup-hooks.sh"
+      "bash scripts/setup-hooks.sh || true"
     ]
+  },
+  "autoload": {
+    "psr-4": {
+      "Voyager\\QualityTools\\": "src/"
+    }
   }
 }
