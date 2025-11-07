@@ -44,14 +44,19 @@ else
   exit 1
 fi
 
-# detect-secrets
-if [ -x "$DETECT_BIN" ]; then
-  echo "🔹 Running detect-secrets..."
-  bash "$SCRIPT_DIR/run-detect-secrets.sh"
-  echo ""
+# detect-secrets (only for git hooks)
+if [ "${RUN_DETECT_SECRETS:-}" = "1" ]; then
+  if [ -x "$DETECT_BIN" ]; then
+    echo "🔹 Running detect-secrets..."
+    bash "$SCRIPT_DIR/run-detect-secrets.sh"
+    echo ""
+  else
+    echo "⚠️  detect-secrets is not installed. Ensure Python 3 is available and run 'composer install'." >&2
+    exit 1
+  fi
 else
-  echo "⚠️  detect-secrets is not installed. Ensure Python 3 is available and run 'composer install'." >&2
-  exit 1
+  echo "ℹ️  Skipping detect-secrets (only runs during git commits)."
+  echo ""
 fi
 
 echo "✅ All quality checks completed!"

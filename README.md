@@ -54,11 +54,18 @@ On every `composer install`/`composer update`, the toolkit will:
 Composer scripts are provided for convenience:
 
 ```bash
-composer run quality:phpcs          # PSR-12 style check (configs/phpcs.xml)
-composer run quality:phpstan        # Static analysis (uses project phpstan.neon if present)
-composer run quality:grumphp        # Executes configured GrumPHP tasks
-composer run quality:detect-secrets # Scans repository for secrets (uses .secrets.baseline when available)
-composer run quality:run            # Runs the whole bundle (same as the Git hook)
+composer quality:phpcs          # PSR-12 style check (configs/phpcs.xml)
+composer quality:phpstan        # Static analysis (uses project phpstan.neon if present)
+composer quality:grumphp        # Executes configured GrumPHP tasks
+composer quality:detect-secrets # Scans staged files for secrets (uses .secrets.baseline when available)
+composer quality:run            # Runs the whole bundle (same as the Git hook)
+
+# Or run the Composer scripts directly when working inside this package
+composer run quality:phpcs
+composer run quality:phpstan
+composer run quality:grumphp
+composer run quality:detect-secrets
+composer run quality:run
 ```
 
 You can also call the wrapper binaries directly:
@@ -80,7 +87,9 @@ vendor/bin/detect-secrets --help
    git commit -m "chore: add detect-secrets baseline"
    ```
 
-2. The Composer scripts and Git hook will use `.secrets.baseline` automatically and fail when new secrets are detected. Without a baseline the scan still runs, but you'll receive a reminder to create one.
+2. During commits the Git hook scans **only the staged files** for newly introduced secrets. The Composer script `quality:detect-secrets` mirrors this behaviour so you can double-check before committing.
+
+3. With `.secrets.baseline` checked in, the scan fails when a new secret is detected. Without a baseline the scan still runs, but you'll receive a reminder to create one.
 
 ---
 
