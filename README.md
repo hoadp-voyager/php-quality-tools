@@ -87,7 +87,9 @@ vendor/bin/detect-secrets --help
    git commit -m "chore: add detect-secrets baseline"
    ```
 
-2. The Composer scripts and Git hook will use `.secrets.baseline` automatically and fail when new secrets are detected. Without a baseline the scan still runs, but you'll receive a reminder to create one.
+2. During commits the Git hook scans **only the staged files** for newly introduced secrets. The Composer script `quality:detect-secrets` mirrors this behaviour so you can double-check before committing.
+
+3. With `.secrets.baseline` checked in, the scan fails when a new secret is detected. Without a baseline the scan still runs, but you'll receive a reminder to create one.
 
 ---
 

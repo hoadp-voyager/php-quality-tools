@@ -6,7 +6,7 @@ QUALITY_BIN="$PROJECT_ROOT/vendor/bin/quality-checks"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 if [ -x "$QUALITY_BIN" ]; then
-  exec "$QUALITY_BIN"
+  RUN_DETECT_SECRETS=1 exec "$QUALITY_BIN"
 fi
 
-exec "$SCRIPT_DIR/run-quality-checks.sh"
+RUN_DETECT_SECRETS=1 exec "$SCRIPT_DIR/run-quality-checks.sh"

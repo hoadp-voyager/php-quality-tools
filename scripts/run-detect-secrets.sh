@@ -32,7 +32,13 @@ fi
 if [ -f "$PROJECT_DIR/.secrets.baseline" ]; then
   "$DETECT_BIN" scan --all-files --baseline "$PROJECT_DIR/.secrets.baseline" "${EXTRA_ARGS[@]}"
 else
-  echo "ℹ️  No .secrets.baseline found. Running full scan without baseline." >&2
+  echo "ℹ️  No .secrets.baseline found. Running scan without baseline." >&2
   echo "    Generate one with 'vendor/bin/detect-secrets scan --all-files > .secrets.baseline' and commit it." >&2
   "$DETECT_BIN" scan --all-files "${EXTRA_ARGS[@]}"
 fi
+
+if [ -n "$FAIL_FLAG" ]; then
+  SCAN_ARGS+=("$FAIL_FLAG")
+fi
+
+"$DETECT_BIN" "${SCAN_ARGS[@]}" "${STAGED_FILES[@]}"
