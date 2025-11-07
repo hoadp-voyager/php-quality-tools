@@ -1,6 +1,6 @@
 {
   "name": "voyager/php-quality-tools",
-  "description": "PHP quality tools (Docker-based checking)",
+  "description": "PHP quality tools (Composer-based checking)",
   "type": "library",
   "require": {
     "php": ">=8.2",
@@ -8,9 +8,33 @@
     "phpstan/phpstan": "^1.10",
     "phpro/grumphp": "^2.9"
   },
+  "bin": [
+    "bin/quality-checks",
+    "bin/detect-secrets"
+  ],
   "scripts": {
     "post-install-cmd": [
-      "bash scripts/setup-hooks.sh || true"
+      "bash -c 'BASE=vendor/voyager/php-quality-tools; if [ ! -d \"$BASE/scripts\" ]; then BASE=.; fi; bash \"$BASE/scripts/install-detect-secrets.sh\"'",
+      "bash -c 'BASE=vendor/voyager/php-quality-tools; if [ ! -d \"$BASE/scripts\" ]; then BASE=.; fi; bash \"$BASE/scripts/setup-hooks.sh\"'"
+    ],
+    "post-update-cmd": [
+      "bash -c 'BASE=vendor/voyager/php-quality-tools; if [ ! -d \"$BASE/scripts\" ]; then BASE=.; fi; bash \"$BASE/scripts/install-detect-secrets.sh\"'",
+      "bash -c 'BASE=vendor/voyager/php-quality-tools; if [ ! -d \"$BASE/scripts\" ]; then BASE=.; fi; bash \"$BASE/scripts/setup-hooks.sh\"'"
+    ],
+    "quality:phpcs": [
+      "bash vendor/voyager/php-quality-tools/scripts/run-phpcs.sh"
+    ],
+    "quality:phpstan": [
+      "bash vendor/voyager/php-quality-tools/scripts/run-phpstan.sh"
+    ],
+    "quality:grumphp": [
+      "vendor/bin/grumphp run"
+    ],
+    "quality:detect-secrets": [
+      "bash vendor/voyager/php-quality-tools/scripts/run-detect-secrets.sh"
+    ],
+    "quality:run": [
+      "bash vendor/voyager/php-quality-tools/scripts/run-quality-checks.sh"
     ]
   },
   "autoload": {
