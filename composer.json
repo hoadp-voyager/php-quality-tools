@@ -1,13 +1,12 @@
 {
   "name": "voyager/php-quality-tools",
   "description": "PHP quality tools (Composer-based checking)",
-  "type": "composer-plugin",
+  "type": "library",
   "require": {
     "php": ">=8.2",
     "squizlabs/php_codesniffer": "^3.9",
     "phpstan/phpstan": "^1.10 || ^2.0",
-    "phpro/grumphp": "^2.9",
-    "composer-plugin-api": "^2.2"
+    "phpro/grumphp": "^2.9"
   },
   "bin": [
     "bin/quality-checks",
@@ -16,12 +15,10 @@
   "scripts": {
     "post-install-cmd": [
       "bash -c 'BASE=vendor/voyager/php-quality-tools; if [ ! -d \"$BASE/scripts\" ]; then BASE=.; fi; bash \"$BASE/scripts/install-detect-secrets.sh\"'",
-      "bash -c 'BASE=vendor/voyager/php-quality-tools; if [ ! -d \"$BASE/scripts\" ]; then BASE=.; fi; bash \"$BASE/scripts/publish-configs.sh\"'",
       "bash -c 'BASE=vendor/voyager/php-quality-tools; if [ ! -d \"$BASE/scripts\" ]; then BASE=.; fi; bash \"$BASE/scripts/setup-hooks.sh\"'"
     ],
     "post-update-cmd": [
       "bash -c 'BASE=vendor/voyager/php-quality-tools; if [ ! -d \"$BASE/scripts\" ]; then BASE=.; fi; bash \"$BASE/scripts/install-detect-secrets.sh\"'",
-      "bash -c 'BASE=vendor/voyager/php-quality-tools; if [ ! -d \"$BASE/scripts\" ]; then BASE=.; fi; bash \"$BASE/scripts/publish-configs.sh\"'",
       "bash -c 'BASE=vendor/voyager/php-quality-tools; if [ ! -d \"$BASE/scripts\" ]; then BASE=.; fi; bash \"$BASE/scripts/setup-hooks.sh\"'"
     ],
     "quality:phpcs": [

@@ -4,12 +4,6 @@ set -euo pipefail
 PROJECT_DIR="$(pwd)"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 CONFIG_FILE="$SCRIPT_DIR/../configs/phpcs.xml"
-
-if [ -f "$PROJECT_DIR/phpcs.xml" ]; then
-  CONFIG_FILE="$PROJECT_DIR/phpcs.xml"
-elif [ -f "$PROJECT_DIR/phpcs.xml.dist" ]; then
-  CONFIG_FILE="$PROJECT_DIR/phpcs.xml.dist"
-fi
 PHPCS_BIN="$PROJECT_DIR/vendor/bin/phpcs"
 
 if [ ! -x "$PHPCS_BIN" ]; then
