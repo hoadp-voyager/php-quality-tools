@@ -9,7 +9,7 @@ This package bundles PHP_CodeSniffer, PHPStan, GrumPHP and Yelp's Detect Secrets
 ## 🚀 What's inside?
 
 - ✅ Unified setup: **PHP_CodeSniffer**, **PHPStan**, **GrumPHP**, **detect-secrets**
-- 🧰 Composer-first workflow — no Docker required
+- 🧰 Composer-first workflow that works on any machine with PHP and Python
 - 🔐 Secret scanning with automatic virtualenv bootstrap
 - 🔧 Auto-installed Git pre-commit hook that runs the full suite
 
@@ -54,11 +54,11 @@ On every `composer install`/`composer update`, the toolkit will:
 Composer scripts are provided for convenience:
 
 ```bash
-composer quality:phpcs          # PSR-12 style check (configs/phpcs.xml)
-composer quality:phpstan        # Static analysis (uses project phpstan.neon if present)
-composer quality:grumphp        # Executes configured GrumPHP tasks
-composer quality:detect-secrets # Scans repository for secrets (uses .secrets.baseline when available)
-composer quality:run            # Runs the whole bundle (same as the Git hook)
+composer run quality:phpcs          # PSR-12 style check (configs/phpcs.xml)
+composer run quality:phpstan        # Static analysis (uses project phpstan.neon if present)
+composer run quality:grumphp        # Executes configured GrumPHP tasks
+composer run quality:detect-secrets # Scans repository for secrets (uses .secrets.baseline when available)
+composer run quality:run            # Runs the whole bundle (same as the Git hook)
 ```
 
 You can also call the wrapper binaries directly:

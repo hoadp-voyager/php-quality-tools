@@ -22,19 +22,19 @@
       "bash -c 'BASE=vendor/voyager/php-quality-tools; if [ ! -d \"$BASE/scripts\" ]; then BASE=.; fi; bash \"$BASE/scripts/setup-hooks.sh\"'"
     ],
     "quality:phpcs": [
-      "bash vendor/voyager/php-quality-tools/scripts/run-phpcs.sh"
+      "bash -c 'BASE=vendor/voyager/php-quality-tools; if [ ! -d \"$BASE/scripts\" ]; then BASE=.; fi; bash \"$BASE/scripts/run-phpcs.sh\"'"
     ],
     "quality:phpstan": [
-      "bash vendor/voyager/php-quality-tools/scripts/run-phpstan.sh"
+      "bash -c 'BASE=vendor/voyager/php-quality-tools; if [ ! -d \"$BASE/scripts\" ]; then BASE=.; fi; bash \"$BASE/scripts/run-phpstan.sh\"'"
     ],
     "quality:grumphp": [
       "vendor/bin/grumphp run"
     ],
     "quality:detect-secrets": [
-      "bash vendor/voyager/php-quality-tools/scripts/run-detect-secrets.sh"
+      "bash -c 'BASE=vendor/voyager/php-quality-tools; if [ ! -d \"$BASE/scripts\" ]; then BASE=.; fi; bash \"$BASE/scripts/run-detect-secrets.sh\"'"
     ],
     "quality:run": [
-      "bash vendor/voyager/php-quality-tools/scripts/run-quality-checks.sh"
+      "bash -c 'BASE=vendor/voyager/php-quality-tools; if [ ! -d \"$BASE/scripts\" ]; then BASE=.; fi; bash \"$BASE/scripts/run-quality-checks.sh\"'"
     ]
   },
   "autoload": {
