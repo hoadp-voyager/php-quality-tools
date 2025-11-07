@@ -9,7 +9,7 @@ This package bundles PHP_CodeSniffer, PHPStan, GrumPHP and Yelp's Detect Secrets
 ## 🚀 What's inside?
 
 - ✅ Unified setup: **PHP_CodeSniffer**, **PHPStan**, **GrumPHP**, **detect-secrets**
-- 🧰 Composer-first workflow that works on any machine with PHP and Python
+- 🧰 Composer-first workflow — no Docker required
 - 🔐 Secret scanning with automatic virtualenv bootstrap
 - 🔧 Auto-installed Git pre-commit hook that runs the full suite
 
