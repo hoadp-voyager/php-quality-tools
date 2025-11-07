@@ -40,7 +40,6 @@ This package bundles PHP_CodeSniffer, PHPStan, GrumPHP and Yelp's Detect Secrets
    ```
 
 > ℹ️  Requirements: PHP ≥ 8.2, Composer, Python 3 with `venv` support.
-> 🔐 When prompted, allow the `voyager/php-quality-tools` Composer plugin so the `quality:*` commands are registered.
 
 On every `composer install`/`composer update`, the toolkit will:
 
@@ -52,18 +51,15 @@ On every `composer install`/`composer update`, the toolkit will:
 
 ## 🧪 Running checks manually
 
-Once installed, the Composer plugin exposes dedicated commands:
+Composer scripts are provided for convenience:
 
 ```bash
-composer quality:phpcs           # PSR-12 style check (configs/phpcs.xml)
-composer quality:phpstan         # Static analysis (uses project phpstan.neon if present)
-composer quality:grumphp         # Executes configured GrumPHP tasks
-composer quality:detect-secrets  # Scans repository for secrets (uses .secrets.baseline when available)
-composer quality:run             # Runs the whole bundle (same as the Git hook)
-composer run quality:phpcs       # Identical to the command above (via Composer scripts)
+composer run quality:phpcs          # PSR-12 style check (configs/phpcs.xml)
+composer run quality:phpstan        # Static analysis (uses project phpstan.neon if present)
+composer run quality:grumphp        # Executes configured GrumPHP tasks
+composer run quality:detect-secrets # Scans repository for secrets (uses .secrets.baseline when available)
+composer run quality:run            # Runs the whole bundle (same as the Git hook)
 ```
-
-> ✅ If Composer prompts to allow the plugin, answer “yes” so the commands become available automatically.
 
 You can also call the wrapper binaries directly:
 
@@ -84,7 +80,7 @@ vendor/bin/detect-secrets --help
    git commit -m "chore: add detect-secrets baseline"
    ```
 
-2. The Composer scripts and Git hook will use `.secrets.baseline` automatically and fail when new secrets are detected. Without a baseline the scan still runs, but you'll receive a reminder to create one. When using older versions of `detect-secrets` that lack `--fail-on-secrets`, the toolkit parses the scan results and exits non-zero if any findings remain.
+2. The Composer scripts and Git hook will use `.secrets.baseline` automatically and fail when new secrets are detected. Without a baseline the scan still runs, but you'll receive a reminder to create one.
 
 ---
 
@@ -98,10 +94,9 @@ If you maintain a custom hook already, the installer appends the Voyager block s
 
 ## ⚙️ Configuration notes
 
-- During installation the toolkit publishes `.php-cs-fixer.dist.php` (Laravel-optimised finder and rules) and `grumphp.yml` into your project if they don't exist so you can tweak them freely.
-- PHP_CodeSniffer ruleset lives in `vendor/voyager/php-quality-tools/configs/phpcs.xml` by default, but `scripts/run-phpcs.sh` will prefer a local `phpcs.xml` or `phpcs.xml.dist` if you add one.
+- PHP_CodeSniffer ruleset lives in `configs/phpcs.xml` (PSR-12 by default).
 - PHPStan baseline can be overridden by adding `phpstan.neon` in your project root.
-- GrumPHP reads the generated `grumphp.yml`; adjust its task configuration to point at your preferred rulesets or extra checks.
+- GrumPHP configuration is provided in `configs/grumphp.yml` and executes the same `quality:*` commands.
 - Adjust the Composer scripts in your consuming project if you need different folders than `src/` and `tests/`.
 
 ---
