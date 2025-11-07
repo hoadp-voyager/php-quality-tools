@@ -1,53 +1,57 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="$(pwd)"
+CONFIG_DIR="$SCRIPT_DIR/../configs"
+DETECT_BIN="$PROJECT_DIR/vendor/bin/detect-secrets"
 
 echo ""
 echo "🚀 Running Voyager PHP Quality Checks"
 echo "===================================="
 
-# Base directory for the toolkit (this repo, inside vendor)
-TOOLKIT_DIR="$(dirname "$0")/../configs"
-
-# Path to project root (where this script is executed)
-PROJECT_DIR=$(pwd)
-
 echo "📂 Project directory: $PROJECT_DIR"
-echo "🧰 Toolkit directory: $TOOLKIT_DIR"
+echo "🧰 Toolkit directory: $CONFIG_DIR"
 echo ""
 
-# Ensure vendor binaries exist
-if [ ! -f "$PROJECT_DIR/vendor/bin/phpcs" ]; then
-  echo "⚠️  vendor/bin/phpcs not found — did you run 'composer install'?"
+# PHP_CodeSniffer
+if [ -x "$PROJECT_DIR/vendor/bin/phpcs" ]; then
+  echo "🔹 Running PHP_CodeSniffer..."
+  bash "$SCRIPT_DIR/run-phpcs.sh"
+  echo ""
+else
+  echo "⚠️  vendor/bin/phpcs not found — did you run 'composer install'?" >&2
   exit 1
 fi
 
-# 1️⃣ Run PHP_CodeSniffer
-echo "🔹 Running PHP_CodeSniffer..."
-$PROJECT_DIR/vendor/bin/phpcs --standard="$TOOLKIT_DIR/phpcs.xml" "$PROJECT_DIR/src" "$PROJECT_DIR/tests" || true
-echo ""
-
-# 2️⃣ Run PHPStan
-echo "🔹 Running PHPStan..."
-# Determine which config to use
-if [ -f "$PROJECT_DIR/phpstan.neon" ]; then
-  CONFIG_FILE="$PROJECT_DIR/phpstan.neon"
-else
-  CONFIG_FILE="$TOOLKIT_DIR/phpstan.neon"
-fi
-echo "PHPStan CONFIG_FILE: $CONFIG_FILE"
-# Run PHPStan from the project root so relative paths work correctly
-(
-  cd "$PROJECT_DIR"
-  echo "Current directory: $(pwd)"
-  vendor/bin/phpstan analyse --configuration="$CONFIG_FILE" src tests || true
-)
-echo ""
-
-# 3️⃣ Run GrumPHP (pre-commit checks)
-if [ -f "$PROJECT_DIR/vendor/bin/grumphp" ]; then
-  echo "🔹 Running GrumPHP..."
-  $PROJECT_DIR/vendor/bin/grumphp run || true
+# PHPStan
+if [ -x "$PROJECT_DIR/vendor/bin/phpstan" ]; then
+  echo "🔹 Running PHPStan..."
+  bash "$SCRIPT_DIR/run-phpstan.sh"
   echo ""
+else
+  echo "⚠️  vendor/bin/phpstan not found — did you run 'composer install'?" >&2
+  exit 1
+fi
+
+# GrumPHP
+if [ -x "$PROJECT_DIR/vendor/bin/grumphp" ]; then
+  echo "🔹 Running GrumPHP..."
+  "$PROJECT_DIR/vendor/bin/grumphp" run
+  echo ""
+else
+  echo "⚠️  vendor/bin/grumphp not found — did you run 'composer install'?" >&2
+  exit 1
+fi
+
+# detect-secrets
+if [ -x "$DETECT_BIN" ]; then
+  echo "🔹 Running detect-secrets..."
+  bash "$SCRIPT_DIR/run-detect-secrets.sh"
+  echo ""
+else
+  echo "⚠️  detect-secrets is not installed. Ensure Python 3 is available and run 'composer install'." >&2
+  exit 1
 fi
 
 echo "✅ All quality checks completed!"
