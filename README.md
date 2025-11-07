@@ -40,7 +40,6 @@ This package bundles PHP_CodeSniffer, PHPStan, GrumPHP and Yelp's Detect Secrets
    ```
 
 > ℹ️  Requirements: PHP ≥ 8.2, Composer, Python 3 with `venv` support.
-> 🔐 When prompted, allow the `voyager/php-quality-tools` Composer plugin so the `quality:*` commands are registered.
 
 On every `composer install`/`composer update`, the toolkit will:
 
@@ -52,17 +51,15 @@ On every `composer install`/`composer update`, the toolkit will:
 
 ## 🧪 Running checks manually
 
-Once installed, the Composer plugin exposes dedicated commands:
+Composer scripts are provided for convenience:
 
 ```bash
-composer quality:phpcs           # PSR-12 style check (configs/phpcs.xml)
-composer quality:phpstan         # Static analysis (uses project phpstan.neon if present)
-composer quality:grumphp         # Executes configured GrumPHP tasks
-composer quality:detect-secrets  # Scans repository for secrets (uses .secrets.baseline when available)
-composer quality:run             # Runs the whole bundle (same as the Git hook)
+composer run quality:phpcs          # PSR-12 style check (configs/phpcs.xml)
+composer run quality:phpstan        # Static analysis (uses project phpstan.neon if present)
+composer run quality:grumphp        # Executes configured GrumPHP tasks
+composer run quality:detect-secrets # Scans repository for secrets (uses .secrets.baseline when available)
+composer run quality:run            # Runs the whole bundle (same as the Git hook)
 ```
-
-> ✅ If Composer prompts to allow the plugin, answer “yes” so the commands become available automatically.
 
 You can also call the wrapper binaries directly:
 
