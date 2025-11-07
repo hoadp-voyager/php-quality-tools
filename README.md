@@ -57,7 +57,7 @@ Composer scripts are provided for convenience:
 composer quality:phpcs          # PSR-12 style check (configs/phpcs.xml)
 composer quality:phpstan        # Static analysis (uses project phpstan.neon if present)
 composer quality:grumphp        # Executes configured GrumPHP tasks
-composer quality:detect-secrets # Scans staged files for secrets (uses .secrets.baseline when available)
+composer quality:detect-secrets # Scans repository for secrets (uses .secrets.baseline when available)
 composer quality:run            # Runs the whole bundle (same as the Git hook)
 
 # Or run the Composer scripts directly when working inside this package

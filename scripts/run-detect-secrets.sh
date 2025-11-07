@@ -5,18 +5,6 @@ PROJECT_DIR="$(pwd)"
 DETECT_BIN="$PROJECT_DIR/vendor/bin/detect-secrets"
 FAIL_FLAG=""
 
-if ! git rev-parse --git-dir >/dev/null 2>&1; then
-  echo "ℹ️  Not running inside a git repository; skipping detect-secrets." >&2
-  exit 0
-fi
-
-mapfile -t STAGED_FILES < <(git diff --cached --name-only --diff-filter=ACMR)
-
-if [ ${#STAGED_FILES[@]} -eq 0 ]; then
-  echo "ℹ️  No staged changes detected; skipping detect-secrets." >&2
-  exit 0
-fi
-
 if [ ! -x "$DETECT_BIN" ]; then
   echo "detect-secrets wrapper not found at vendor/bin/detect-secrets. Run 'composer install' to set it up." >&2
   exit 1
@@ -35,13 +23,18 @@ else
   exit 1
 fi
 
-SCAN_ARGS=("scan")
+EXTRA_ARGS=()
+
+if [ -n "$FAIL_FLAG" ]; then
+  EXTRA_ARGS=("$FAIL_FLAG")
+fi
 
 if [ -f "$PROJECT_DIR/.secrets.baseline" ]; then
-  SCAN_ARGS+=("--baseline" "$PROJECT_DIR/.secrets.baseline")
+  "$DETECT_BIN" scan --all-files --baseline "$PROJECT_DIR/.secrets.baseline" "${EXTRA_ARGS[@]}"
 else
   echo "ℹ️  No .secrets.baseline found. Running scan without baseline." >&2
   echo "    Generate one with 'vendor/bin/detect-secrets scan --all-files > .secrets.baseline' and commit it." >&2
+  "$DETECT_BIN" scan --all-files "${EXTRA_ARGS[@]}"
 fi
 
 if [ -n "$FAIL_FLAG" ]; then
