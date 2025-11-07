@@ -41,5 +41,8 @@
     "psr-4": {
       "Voyager\\QualityTools\\": "src/"
     }
+  },
+  "extra": {
+    "class": "Voyager\\QualityTools\\Plugin"
   }
 }
